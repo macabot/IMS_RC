@@ -1,16 +1,13 @@
+% Richard Rozeboom (6173292) and Michael Cabot (6047262)
+
 function bruteForce(folder, bins)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 im1 = imread(strcat(folder, '/', files(1).name));
-figure(1)
-imshow(im1)
-title('Click on upper-left-corner and lower-right-corner of target')
-corners = ginput(2);
-centre = floor(mean(corners));
+% NOTE: pickSubimage/2 is in debugmode and chooses default subimage
+[target, centre] = pickSubimage(im1, 1); % pick target
 xCentre = centre(1);
 yCentre = centre(2);
-
-target = im1(corners(1,2):corners(2,2), corners(1,1):corners(2,1), :);
 halfWidthScene = size(target,1);
 halfHeightScene = size(target,2);
 
