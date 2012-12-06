@@ -11,6 +11,7 @@ xCentre = centre(2);
 halfWidthScene = size(target,1); % scene-width is 2 times target-width
 halfHeightScene = size(target,2); % scene-height is 2 times target-height
 
+kernel = makeKernel(size(target), 'epan', [pi, 2]); % Epanechnikov kernel
 distType = 'bhatt'; % bhattacharyya distance
 for i=1:numel(files)
     figure(1);
@@ -23,7 +24,7 @@ for i=1:numel(files)
     % find target
     scene = im(xCentre-halfWidthScene:xCentre+halfWidthScene, ...
         yCentre-halfHeightScene:yCentre+halfHeightScene, :);
-    [xNew,yNew] = findTarget(scene, target, bins, distType);
+    [xNew,yNew] = findTarget(scene, target, bins, distType, kernel);
     xCentre = xNew+xCentre-halfWidthScene;
     yCentre = yNew+yCentre-halfHeightScene;
     % draw match 

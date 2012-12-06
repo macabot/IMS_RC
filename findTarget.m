@@ -1,18 +1,26 @@
 % Richard Rozeboom (6173292) and Michael Cabot (6047262)
 
-function [x,y] = findTarget(scene, target, bins, distType )
+function [x,y] = findTarget(scene, target, bins, distType, kernel)
 % normalize images
 searchSpace = convert(scene,'');
 target = convert(target,'');
 % target histogram
-hTarget = makeHist(target, bins);
+if nargin < 5
+    hTarget = makeHist(target, bins);
+else
+    hTarget = makeHist(target, bins, kernel);
+end
 nhTarget = normalize(hTarget);
 % search for target
 distanceMap = zeros(size(scene,1),size(scene,2));
 for i = 1:size(scene,1)-size(target,1)
     for j = 1:size(scene,2)-size(target,2)
         subSpace = searchSpace(i:i+size(target,1)-1, j:j+size(target,2)-1, :);
-        hSub = makeHist(subSpace, bins);
+        if nargin < 5
+            hSub = makeHist(subSpace, bins);
+        else
+            hSub = makeHist(subSpace, bins, kernel);
+        end
         nhSub = normalize(hSub);
         dist = histDist(nhTarget, nhSub, distType);
         xPos = i+floor(size(target,1)/2);
