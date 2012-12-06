@@ -4,8 +4,10 @@
 %
 % im = image
 % n = amount of bins
+% kernel (optional) = says how much is added to bin. 
+% If no kernel is given then 1 is added to bin.
 
-function freq = makeHist(im, n, colorSpace)
+function freq = makeHist(im, n, kernel)
 
 %% Assigning the pixels to the histogram cells
 %disp('Assigning the pixels to the histogram cells...');
@@ -33,7 +35,11 @@ index = n * a +n^2 *b + c + 1;
 % computation of frequencies
 for col = 1:size(im, 2)
     for row = 1:size(im, 1)
-        freq(index(row,col)) = freq(index(row,col)) + 1;
+        if nargin < 3
+            freq(index(row,col)) = freq(index(row,col)) + 1;
+        else % if kernel is given
+            freq(index(row,col)) = freq(index(row,col)) + kernel(row,col);
+        end
     end
 end
 % Reshaping into 3D-array

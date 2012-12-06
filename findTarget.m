@@ -5,14 +5,14 @@ function [x,y] = findTarget(scene, target, bins, distType )
 searchSpace = convert(scene,'');
 target = convert(target,'');
 % target histogram
-hTarget = makeHist(target, bins, '');
+hTarget = makeHist(target, bins);
 nhTarget = normalize(hTarget);
 % search for target
 distanceMap = zeros(size(scene,1),size(scene,2));
 for i = 1:size(scene,1)-size(target,1)
     for j = 1:size(scene,2)-size(target,2)
         subSpace = searchSpace(i:i+size(target,1)-1, j:j+size(target,2)-1, :);
-        hSub = makeHist(subSpace, bins, '');
+        hSub = makeHist(subSpace, bins);
         nhSub = normalize(hSub);
         dist = histDist(nhTarget, nhSub, distType);
         xPos = i+floor(size(target,1)/2);

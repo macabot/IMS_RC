@@ -3,8 +3,8 @@
 function kernel = makeKernel(size, type, parameters)
 size = size-1;
 [X, Y] = meshgrid(-size(2)/2:size(2)/2, -size(1)/2:size(1)/2);
-X = X/max(max(X)); % normalize by width and height
-Y = Y/max(max(Y));
+X = X/max(X(:)); % normalize by width and height
+Y = Y/max(Y(:));
 distances = sqrt(X.^2+Y.^2);
 if strcmp(type, 'epan') % Epanechnikov kernel
     c = parameters(1);

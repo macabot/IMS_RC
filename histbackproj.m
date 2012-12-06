@@ -11,7 +11,7 @@ target = convert(target, '');
 % range = minRange:stepSize:maxRange;
 % size(target)
 % size(range)
-h = makeHist(target, bins,'');%range);
+h = makeHist(target, bins);%range);
 
 backproj = zeros(size(scene, 1), size(scene, 2));
 for i=1:size(scene, 1)
