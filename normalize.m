@@ -1,9 +1,5 @@
+% Richard Rozeboom (6173292) and Michael Cabot (6047262)
+
 function normMatrix = normalize(matrix)
-
-dimensions = length(size(matrix));
-sumMatrix = matrix;
-for i=1:dimensions
-    sumMatrix = sum(sumMatrix);
-end
-
+sumMatrix = sum(matrix(:)); % sum all elements
 normMatrix = matrix./sumMatrix;
