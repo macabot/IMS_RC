@@ -1,7 +1,7 @@
-function histbackproj(scene, target, bins)
-originalScene = scene;
+function backproj = histbackproj(scene, hTarget, hScene,  bins)
+% originalScene = scene;
 scene = convert(scene, '');
-target = convert(target, '');
+%target = convert(target, '');
 
 % minRange = min(min(target));
 % minRange = [minRange(1,1,1), minRange(1,1,2), minRange(1,1,3)];
@@ -11,18 +11,29 @@ target = convert(target, '');
 % range = minRange:stepSize:maxRange;
 % size(target)
 % size(range)
-h = makeHist(target, bins);%range);
+
+
+if strcmp(class(scene), 'uint8')
+    step = 255/bins;
+else
+    step = 1.0/bins;
+end
 
 backproj = zeros(size(scene, 1), size(scene, 2));
 for i=1:size(scene, 1)
     for j=1:size(scene, 2)
-        backproj(i,j) = pixelInHist(scene(i,j,:), h, 255/bins);
+        pu = pixelInHist(scene(i,j,:), hScene, step);
+        qu = pixelInHist(scene(i,j,:), hTarget, step);
+        if pu == 0
+            backproj(i,j)=0;
+        else
+            backproj(i,j) = sqrt(qu/pu);
+        end
+        
     end
 end
     
-figure();
-imshow(originalScene);
-hold on;
-[x,y] = find(backproj==(max(max(backproj))))
-plot(y, x, 'go', 'MarkerSize', 50, 'LineWidth',4);
-%backproj = bsxfun(@pixelInHist, scene, [h, stepSize]);
+
+% [x,y] = find(backproj==(max(max(backproj))))
+% plot(y, x, 'go', 'MarkerSize', 50, 'LineWidth',4);
+% %backproj = bsxfun(@pixelInHist, scene, [h, stepSize]);

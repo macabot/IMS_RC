@@ -5,6 +5,6 @@ dist = -1;
 if strcmp(type, 'eucl') % euclidean distance
    dist = sqrt(sum(sum(sum( (histA - histB).^2 ))));
 elseif strcmp(type, 'bhatt') % bhattacharyya distance
-   coefficient = sum(sum(sum(sqrt(histA.*histB))));
+   coefficient = bhattCoef(histA, histB);
    dist = sqrt(1-coefficient);
 end

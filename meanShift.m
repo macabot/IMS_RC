@@ -1,28 +1,17 @@
-function meanShift(folder, bins)
-clf; % clear all images
-files = dir(strcat(folder, '/*.png'));
-im1 = imread(strcat(folder, '/', files(1).name));
-% NOTE: pickSubimage/2 is in debugmode and chooses default subimage
-[target, centre] = pickSubimage(im1, 1); % pick target
-yCentre = centre(1);
-xCentre = centre(2);
-halfWidthScene = size(target,1); % scene-width is 2 times target-width
-halfHeightScene = size(target,2); % scene-height is 2 times target-height
+function location = meanShift(scene, hTarget, bins)
 
-kernel = makeKernel(size(target), 'epan', [pi, 2]); % Epanechnikov kernel
-distType = 'bhatt'; % bhattacharyya distance
-for i=1:numel(files)
-    figure(1);
-    clf;
-    % read/show image
-    im = imread(strcat(folder, '/', files(i).name));
-    imshow(im);
-    hold on;
-    title(files(i).name)
-    % find target
-    % TODO
-    % draw match 
-    % TODO
-end
-hold off;
-title('Finished');
+
+hScene = normalize(makeHist(scene, bins));
+weights = histbackproj(scene, hTarget, hScene,  bins)
+
+[X,Y] = meshgrid(size(scene,2),size(scene,1));
+
+Z(:,:,1) = X;
+Z(:,:,2) = Y;
+
+enumeratorX  = sum(sum(X .*weights,1),2); 
+enumeratorY  = sum(sum(Y .*weights,1),2);
+demoninator = sum(weights(:));
+
+
+location = [enumeratorX / demoninator, enumeratorY/ demoninator];
