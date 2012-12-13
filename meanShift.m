@@ -1,17 +1,15 @@
-function location = meanShift(scene, hTarget, bins)
+% Richard Rozeboom (6173292) and Michael Cabot (6047262)
 
-
-hScene = normalize(makeHist(scene, bins));
-weights = histbackproj(scene, hTarget, hScene,  bins)
-
-[X,Y] = meshgrid(size(scene,2),size(scene,1));
-
-Z(:,:,1) = X;
-Z(:,:,2) = Y;
-
-enumeratorX  = sum(sum(X .*weights,1),2); 
-enumeratorY  = sum(sum(Y .*weights,1),2);
+function location = meanShift(scene, hScene, hTarget, bins)
+% derive weights
+weights = histbackproj(scene, hTarget, hScene,  bins);
+% find next location of target candidate 
+[X,Y] = meshgrid(1:size(scene,2),1:size(scene,1));
+xTimesWeights = X.*weights;
+yTimesWeights = Y.*weights;
+enumeratorX  = sum(xTimesWeights(:)); 
+enumeratorY  = sum(yTimesWeights(:));
 demoninator = sum(weights(:));
 
-
-location = [enumeratorX / demoninator, enumeratorY/ demoninator];
+location = [round(enumeratorX/demoninator), ...
+    round(enumeratorY/demoninator)];

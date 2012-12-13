@@ -1,5 +1,5 @@
 % Based on code by Pavel Rajmic
-% Modified by Richard Rozeboom & Michael Cabot
+% Modified by Richard Rozeboom (6173292) & Michael Cabot (6047262)
 % See http://www.mathworks.com/matlabcentral/fileexchange/38685
 %
 % im = image

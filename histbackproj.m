@@ -1,35 +1,17 @@
-function backproj = histbackproj(scene, hTarget, hScene,  bins)
-% originalScene = scene;
-scene = convert(scene, '');
-%target = convert(target, '');
+% Richard Rozeboom (6173292) and Michael Cabot (6047262)
 
-% minRange = min(min(target));
-% minRange = [minRange(1,1,1), minRange(1,1,2), minRange(1,1,3)];
-% maxRange = max(max(target));
-% maxRange = [maxRange(1,1,1), maxRange(1,1,2), maxRange(1,1,3)];
-% stepSize = (maxRange-minRange)/bins;
-% range = minRange:stepSize:maxRange;
-% size(target)
-% size(range)
-
-
-if strcmp(class(scene), 'uint8')
-    step = 255/bins;
-else
-    step = 1.0/bins;
-end
+function backproj = histbackproj(scene, hTarget, hScene, bins)
 
 backproj = zeros(size(scene, 1), size(scene, 2));
 for i=1:size(scene, 1)
     for j=1:size(scene, 2)
-        pu = pixelInHist(scene(i,j,:), hScene, step);
-        qu = pixelInHist(scene(i,j,:), hTarget, step);
+        pu = pixelInHist(scene(i,j,:), hScene, bins);
+        qu = pixelInHist(scene(i,j,:), hTarget, bins);
         if pu == 0
             backproj(i,j)=0;
         else
             backproj(i,j) = sqrt(qu/pu);
         end
-        
     end
 end
     

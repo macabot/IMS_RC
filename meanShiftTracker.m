@@ -1,23 +1,28 @@
+% Richard Rozeboom (6173292) and Michael Cabot (6047262)
+
 function meanShiftTracker(folder, bins)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 im1 = imread(strcat(folder, '/', files(1).name));
 % NOTE: pickSubimage/2 is in debugmode and chooses default subimage
 [target, centre] = pickSubimage(im1, 1); % pick target
+target = convert(target, '');
 yCentre = centre(1);
 xCentre = centre(2);
 halfWidthScene = size(target,1); % scene-width is 2 times target-width
 halfHeightScene = size(target,2); % scene-height is 2 times target-height
-
-hTarget= normalize(makeHist(target, bins));
-
-
-kernel = makeKernel(size(target), 'epan', [pi, 2]); % Epanechnikov kernel
+% Epanechnikov kernels
+parameters = [pi, 2];
+kernelTarget = makeKernel(size(target), 'epan', parameters); 
+sceneSize = [halfWidthScene*2+1, halfHeightScene*2+1];
+kernelScene = makeKernel(sceneSize, 'epan', parameters);
 distType = 'bhatt'; % bhattacharyya distance
-for i=1:numel(files)
+hTarget= normalize(makeHist(target, bins, kernelTarget));
+
+for i=1:numel(files)    
+    % read/show image
     figure(1);
     clf;
-    % read/show image
     im = imread(strcat(folder, '/', files(i).name));
     imshow(im);
     hold on;
@@ -25,12 +30,17 @@ for i=1:numel(files)
     % find target
     scene = im(xCentre-halfWidthScene:xCentre+halfWidthScene, ...
         yCentre-halfHeightScene:yCentre+halfHeightScene, :);
-   
-    coef = bhattCoef(hTarget, hScene)
-    
-    % TODO
+    scene = convert(scene, '');
+    hScene = normalize(makeHist(scene, bins, kernelScene));
+    coef = bhattCoef(hTarget, hScene);
+    location = meanShift(scene, hScene, hTarget, bins);
+    xCentre = location(1)+xCentre-halfWidthScene;
+    yCentre = location(2)+yCentre-halfHeightScene;
     % draw match 
-    % TODO
+    plot(yCentre, xCentre, 'x', 'MarkerSize', 10, 'LineWidth', 3);
+    upperLeft = [yCentre-size(target,2)/2, xCentre-size(target,1)/2];
+    rectangle('Position', [upperLeft(1), upperLeft(2),...
+        size(target,2), size(target,1)])
 end
 hold off;
 title('Finished');
