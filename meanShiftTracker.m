@@ -17,7 +17,7 @@ kernelTarget = makeKernel(size(target), 'epan', parameters);
 sceneSize = [halfWidthScene*2+1, halfHeightScene*2+1];
 kernelScene = makeKernel(sceneSize, 'epan', parameters);
 hTarget= normalize(makeHist(target, bins, kernelTarget));
-epsilon = 1; % maximal distance between new and previous location
+epsilon = 20; % maximal distance between new and previous location
 
 start = cputime; % measure duration of mean-shift
 for i=1:numel(files)    
@@ -28,10 +28,7 @@ for i=1:numel(files)
     imshow(im);
     hold on;
     title(files(i).name)
-    % find target
-    
-    
-    
+    % find target  
     while true 
         scene = im(xCentre-halfWidthScene:xCentre+halfWidthScene, ...
             yCentre-halfHeightScene:yCentre+halfHeightScene, :);
@@ -42,6 +39,7 @@ for i=1:numel(files)
         location = meanShift(scene, hScene, hTarget, bins);
         newXCentre = location(1)+xCentre-halfWidthScene;
         newYCentre = location(2)+yCentre-halfHeightScene;
+        fprintf('Centre: %f, %f\n', newXCentre, newYCentre);
         
         while true
             tempScene = im(newXCentre-halfWidthScene:newXCentre+halfWidthScene, ...
@@ -50,14 +48,20 @@ for i=1:numel(files)
             tempHScene = normalize(makeHist(tempScene, bins, kernelScene));
             tempCoef = bhattCoef(hTarget, tempHScene);
             if tempCoef < coef
-                newXCentre = (newXCentre+xCentre)/2;
-                newYCentre = (newYCentre+yCentre)/2;
+                tempX = round((newXCentre+xCentre)/2);
+                tempY = round((newYCentre+yCentre)/2);
+                if tempX==newXCentre && tempY==newYCentre
+                    break;
+                else
+                    newXCentre = tempX;
+                    newYCentre = tempY;
+                end
             else
                 break;
             end
         end
         
-        if distance([xCentre,yCentre], [newXCentre,newYCentre], 'eucl') < epsilon
+        if distance([xCentre,yCentre], [newXCentre,newYCentre], 'eucl') <= epsilon
            break; 
         else
             xCentre = newXCentre;
@@ -69,7 +73,9 @@ for i=1:numel(files)
     plot(yCentre, xCentre, 'x', 'MarkerSize', 10, 'LineWidth', 3);
     upperLeft = [yCentre-size(target,2)/2, xCentre-size(target,1)/2];
     rectangle('Position', [upperLeft(1), upperLeft(2),...
-        size(target,2), size(target,1)])
+        size(target,2), size(target,1)]);
+    rectangle('Position', [yCentre-size(scene,2)/2, ...
+        xCentre-size(scene,1)/2, size(scene,2), size(scene,1)]);
 end
 averageDuration = (cputime-start)/numel(files);
 hold off;
