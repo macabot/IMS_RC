@@ -1,6 +1,6 @@
 % Richard Rozeboom (6173292) and Michael Cabot (6047262)
 
-function bruteForce(folder, bins)
+function averageDuration = bruteForce(folder, bins)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 im1 = imread(strcat(folder, '/', files(1).name));
@@ -13,6 +13,7 @@ halfHeightScene = size(target,2); % scene-height is 2 times target-height
 
 kernel = makeKernel(size(target), 'epan', [pi, 2]); % Epanechnikov kernel
 distType = 'bhatt'; % bhattacharyya distance
+start = cputime; % measure duration of mean-shift
 for i=1:numel(files)
     figure(1);
     clf;
@@ -33,5 +34,6 @@ for i=1:numel(files)
     rectangle('Position', [upperLeft(1), upperLeft(2),...
         size(target,2), size(target,1)])
 end
+averageDuration = (cputime-start)/numel(files);
 hold off;
 title('Finished');

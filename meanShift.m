@@ -9,7 +9,9 @@ xTimesWeights = X.*weights;
 yTimesWeights = Y.*weights;
 enumeratorX  = sum(xTimesWeights(:)); 
 enumeratorY  = sum(yTimesWeights(:));
-demoninator = sum(weights(:));
+denominator = sum(weights(:));
 
-location = [round(enumeratorX/demoninator), ...
-    round(enumeratorY/demoninator)];
+%location = [round(enumeratorX/denominator), ...
+ %   round(enumeratorY/denominator)];
+location = [round(enumeratorY/denominator), ...
+    round(enumeratorX/denominator)];
