@@ -1,6 +1,6 @@
 % Richard Rozeboom (6173292) and Michael Cabot (6047262)
 
-function averageDuration = bruteForce(folder, bins)
+function [all_frames, averageDuration] = bruteForce(folder, bins)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 im1 = imread(strcat(folder, '/', files(1).name));
@@ -10,6 +10,8 @@ yCentre = centre(1);
 xCentre = centre(2);
 halfWidthScene = size(target,1); % scene-width is 2 times target-width
 halfHeightScene = size(target,2); % scene-height is 2 times target-height
+
+all_frames(1:numel(files)) = struct('cdata', [], 'colormap', []); % images with location of tracked object
 
 kernel = makeKernel(size(target), 'epan', [pi, 2]); % Epanechnikov kernel
 distType = 'bhatt'; % bhattacharyya distance
@@ -33,6 +35,11 @@ for i=1:numel(files)
     upperLeft = [yCentre-size(target,2)/2, xCentre-size(target,1)/2];
     rectangle('Position', [upperLeft(1), upperLeft(2),...
         size(target,2), size(target,1)])
+    rectangle('Position', [yCentre-size(scene,2)/2, ...
+        xCentre-size(scene,1)/2, size(scene,2), size(scene,1)]);
+    
+    %all_frames = [all_frames getframe(gca)];
+    all_frames(i) = getframe(gcf);
 end
 averageDuration = (cputime-start)/numel(files);
 hold off;
