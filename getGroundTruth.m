@@ -11,7 +11,7 @@ for i=1:numel(files)
     im = imread(strcat(folder, '/', files(i).name));
     imshow(im);
     hold on;
-    title(files(i).name)
+    title(files(i).name);
     
     % pick player
     location = ginput(1);
