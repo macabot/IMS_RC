@@ -4,8 +4,8 @@ function averageDuration = meanShiftTracker(folder, bins)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 im1 = imread(strcat(folder, '/', files(1).name));
-% NOTE: pickSubimage/2 is in debugmode and chooses default subimage
-[target, centre] = pickSubimage(im1, 1); % pick target
+% NOTE: pickSubimage/2 chooses default subimage
+[target, centre] = pickSubimage(im1, 'upperLeft'); % pick target
 target = convert(target, '');
 yCentre = centre(1);
 xCentre = centre(2);
@@ -17,7 +17,7 @@ kernelTarget = makeKernel(size(target), 'epan', parameters);
 sceneSize = [halfWidthScene*2+1, halfHeightScene*2+1];
 kernelScene = makeKernel(sceneSize, 'epan', parameters);
 hTarget= normalize(makeHist(target, bins, kernelTarget));
-epsilon = 20; % maximal distance between new and previous location
+epsilon = 2; % maximal distance between new and previous location
 
 start = cputime; % measure duration of mean-shift
 for i=1:numel(files)    

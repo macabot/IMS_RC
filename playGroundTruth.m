@@ -1,4 +1,4 @@
-function test(folder, groundTruth)
+function playGroundTruth(folder, groundTruth)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 
@@ -11,12 +11,10 @@ for i=1:numel(files)
     hold on;
     title(files(i).name)
     
+    % pick player
+    location = groundTruth(i,:);
     % draw match 
-    %location = groundTruth(:,i);
-    %xCentre = location(2);
-    %yCentre = location(1);
-    
-    %plot(yCentre, xCentre, 'x', 'MarkerSize', 10, 'LineWidth', 3);
+    plot(location(1), location(2), 'x', 'MarkerSize', 10, 'LineWidth', 3);
     
 end
 
