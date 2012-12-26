@@ -4,7 +4,6 @@ function conversion = convert(image, type)
 
 if strcmp(class(image), 'uint8')
     image = im2double(image); % also rescales image between 0 and 1
-    %image = double(image);
     conversion = image;
 end
 
@@ -12,7 +11,7 @@ r = image(:,:,1);
 g = image(:,:,2);
 b = image(:,:,3);
     
-if strcmp(type, 'rgb2rgbNormalized') % rgb doubles to normalized rgb
+if strcmp(type, 'rgb2rgbNormalized')
     total = r+g+b;
     conversion(:,:,1) = r./total;
     conversion(:,:,2) = g./total;
@@ -23,6 +22,10 @@ elseif strcmp(type, 'rgb2opponent')
     conversion(:,:,3) = (r+g+b)/sqrt(3);
 elseif strcmp(type, 'rgb2hsv')
     conversion = rgb2hsv(image);
+elseif strcmp(type, 'rgb2hue')
+    conversion = rgb2hsv(image);
+    conversion(:,:,2) = 0; % throw away saturation
+    conversion(:,:,3) = 0; % throw away value
 end
 
 conversion(isnan(conversion)) = 0;
