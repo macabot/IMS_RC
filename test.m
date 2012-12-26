@@ -1,4 +1,4 @@
-function test(folder, groundTruth)
+function test(folder)
 clf; % clear all images
 files = dir(strcat(folder, '/*.png'));
 
@@ -10,13 +10,6 @@ for i=1:numel(files)
     imshow(im);
     hold on;
     title(files(i).name)
-    
-    % draw match 
-    %location = groundTruth(:,i);
-    %xCentre = location(2);
-    %yCentre = location(1);
-    
-    %plot(yCentre, xCentre, 'x', 'MarkerSize', 10, 'LineWidth', 3);
     
 end
 

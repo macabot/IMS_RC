@@ -1,0 +1,14 @@
+meanShiftTracker
+When tracking blue with 10 bins, then player is tracked
+3bins/4bins, then half-line is tracked
+
+tracking upperLeft, switches orange player
+upperLeft2 (target only orange), then player is tracked correctly
+upperleft 100 bins (RGB): weights in meanshift become 0 and tracker fails
+upperleft 10 bins (RGB): meanshift works fine
+upperLeft 100 bins with normalized rgb: meanshift works fine
+
+'dreads2' (smaller target) tracks player while 'dreads' switches player
+
+
+

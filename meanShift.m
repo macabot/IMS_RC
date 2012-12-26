@@ -10,8 +10,9 @@ yTimesWeights = Y.*weights;
 enumeratorX  = sum(xTimesWeights(:)); 
 enumeratorY  = sum(yTimesWeights(:));
 denominator = sum(weights(:));
+if denominator==0
+   fprintf('In meanShift/4: sum of weights is 0!\n'); 
+end
 
-%location = [round(enumeratorX/denominator), ...
- %   round(enumeratorY/denominator)];
 location = [round(enumeratorY/denominator), ...
     round(enumeratorX/denominator)];

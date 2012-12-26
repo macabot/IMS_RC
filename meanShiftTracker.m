@@ -35,6 +35,7 @@ for i=1:numel(files)
     imshow(im);
     hold on;
     title(files(i).name)
+   
     % find target  
     while true 
         scene = im(xCentre-halfWidthScene:xCentre+halfWidthScene, ...
