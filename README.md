@@ -16,8 +16,8 @@ Input:
 - folder : directory of frames that contain target
 - bins : amount of bins for the histogram. Note that there are actually bins^3 bins in the histogram.
 - groundTruth : Matrix containing the true locations of the target for each frame.
-- player : Name of the target.
-- colorSpace : Color space that the target and frames should be converted to.
+- player : Name of the target. Possible values: 'upperLeft', 'upperLeft2', 'dreads', 'dreads2', 'referee', 'blue' and ''. If empty string is geven, then upper-left and lower-right corner of target must be picked by hand.
+- colorSpace : Color space that the target and frames should be converted to. Possible values: 'rgb2rgbNormalized', 'rgb2opponent', 'rgb2hsv', 'rgb2hue' and ''. If empty string is given, then only im2double/1 is applied.
 
 Output:
 - frames : Struct containing images annotated with ground truth (green) and mean shift (blue) location.
