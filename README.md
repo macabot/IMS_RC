@@ -23,3 +23,15 @@ Output:
 - frames : Struct containing images annotated with ground truth (green) and mean shift (blue) location.
 - averageDuration : average duration of Mean Shift Tracker.
 - error : average distance between ground truth and mean shift location.
+
+./groundTruth
+=======
+Holds .mat files that contain the ground truth values for different soccer players.
+
+./movies
+=======
+Contains videos (avi format) that demonstrate the performance of the Mean Shift Tracker.
+
+./results
+=======
+Contains error rates for different target representations.
