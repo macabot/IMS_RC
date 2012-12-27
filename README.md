@@ -24,14 +24,14 @@ Output:
 - averageDuration : average duration of Mean Shift Tracker.
 - error : average distance between ground truth and mean shift location.
 
-./groundTruth
+groundTruth/
 =======
 Holds .mat files that contain the ground truth values for different soccer players.
 
-./movies
+movies/
 =======
 Contains videos (avi format) that demonstrate the performance of the Mean Shift Tracker.
 
-./results
+results/
 =======
 Contains error rates for different target representations.
